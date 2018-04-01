@@ -132,6 +132,12 @@ public class MainController {
         return recordRepository.findByStatusNot("paid");
     }
 
+    @GetMapping(path="/get_table_3")
+    public @ResponseBody RecordModel getAllTables_3(@RequestParam Long recid) {
+        // This returns a JSON or XML with the users
+        return recordRepository.findOneById(recid);
+    }
+
 
     // @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path="/kitchen")

@@ -9,12 +9,13 @@ package io.muic.ooc.pos.Record;
 public interface RecordRepository extends CrudRepository<RecordModel, String> {
     List<RecordModel> findByTablenum(int tablenum);
     RecordModel findOneById(Long recid);
+//    List<RecordModel> findOneById(Long recid);
     RecordModel findOneByOrders(Order order);
     RecordModel findById(Long id);
     List<RecordModel> findByStatus(String status);
     List<RecordModel> findByStatusNot(String status);
 
     RecordModel findByTablenum( Integer tablenum);
-    RecordModel findByDateclose(String date);
+    List<RecordModel> findByDateclose(String date);
 //    RecordModel findById(Long id);
 }

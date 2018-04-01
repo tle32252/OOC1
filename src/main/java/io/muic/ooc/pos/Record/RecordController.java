@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -64,46 +65,62 @@ public class RecordController {
     public @ResponseBody List<HashMap> sellReport(@RequestParam String date){
 //        System.out.println(RecordRepository.findByDateclose(date).getOrders());
         System.out.println(date);
-        List<Order> orderIds = recordRepository.findByDateclose(date).getOrders();
+        List<RecordModel> recordDay = recordRepository.findByDateclose(date);
         HashMap<String, Integer> foodAmountMap = new HashMap<>();
         List<HashMap> bigList = new ArrayList<>();
         List<String> allFood = new ArrayList<>();
         Integer totalPrice = 0;
-        for (int j=0;j<orderIds.size();j++){
-            if (!foodAmountMap.containsKey(orderIds.get(j).getMenu().getName())){
-                foodAmountMap.put(orderIds.get(j).getMenu().getName(), 1);
-            }else{
-                foodAmountMap.put(orderIds.get(j).getMenu().getName(), foodAmountMap.get(orderIds.get(j).getMenu().getName()) +1);
+        for (int k = 0; k< recordDay.size(); k++){
+            List<Order> orderIds =  recordDay.get(k).getOrders();
+            System.out.println("right hereee"+recordDay.get(k).getOrders());
+            for (int j = 0; j < orderIds.size(); j++) {
+                if (!foodAmountMap.containsKey(orderIds.get(j).getMenu().getName())) {
+                    foodAmountMap.put(orderIds.get(j).getMenu().getName(), 1);
+                } else {
+                    foodAmountMap.put(orderIds.get(j).getMenu().getName(), foodAmountMap.get(orderIds.get(j).getMenu().getName()) + 1);
+                }
             }
         }
-        for (int i=0;i<orderIds.size();i++){
-            if (!allFood.contains(orderIds.get(i).getMenu().getName())){
-                HashMap<String, String> foodPriceMap = new HashMap<>();
-                foodPriceMap.put("name", orderIds.get(i).getMenu().getName());
-                allFood.add(orderIds.get(i).getMenu().getName());
-                foodPriceMap.put("amount", foodAmountMap.get(orderIds.get(i).getMenu().getName()).toString());
-                Integer eachPrice = ((orderIds.get(i).getMenu().getPrice()) * (foodAmountMap.get(orderIds.get(i).getMenu().getName())));
-                foodPriceMap.put("price", eachPrice.toString());
-                bigList.add(foodPriceMap);
-                totalPrice += eachPrice;
+        for (int k = 0; k< recordDay.size(); k++) {
+            List<Order> orderIds = recordDay.get(k).getOrders();
+            for (int i = 0; i < orderIds.size(); i++) {
+                if (!allFood.contains(orderIds.get(i).getMenu().getName())) {
+                    HashMap<String, String> foodPriceMap = new HashMap<>();
+                    foodPriceMap.put("name", orderIds.get(i).getMenu().getName());
+                    allFood.add(orderIds.get(i).getMenu().getName());
+                    foodPriceMap.put("amount", foodAmountMap.get(orderIds.get(i).getMenu().getName()).toString());
+                    Integer eachPrice = ((orderIds.get(i).getMenu().getPrice()) * (foodAmountMap.get(orderIds.get(i).getMenu().getName())));
+                    foodPriceMap.put("price", eachPrice.toString());
+                    bigList.add(foodPriceMap);
+                    totalPrice += eachPrice;
+                }
             }
         }
-        HashMap<String, Integer> totalPriceMap = new HashMap<>();
-        totalPriceMap.put("total price", totalPrice);
+        HashMap<String, String> totalPriceMap = new HashMap<>();
+        totalPriceMap.put("name", "Total Price");
+        totalPriceMap.put("price", totalPrice.toString());
         bigList.add(totalPriceMap);
-//        HashMap<String, Integer> foodAmountMap = new HashMap<>();
-//        for (int i=0;i<orderIds.size();i++){
-//            if (foodAmountMap.containsKey(orderIds.get(i).getMenu().getName())){
-//                foodAmountMap.put(orderIds.get(i).getMenu().getName(), foodAmountMap.get(orderIds.get(i).getMenu().getName()) + 1);
-//            }else{
-//                foodAmountMap.put(orderIds.get(i).getMenu().getName(), 1);
-//
-//            }
-//            System.out.println(orderIds.get(i).getMenu().getName());
-//            System.out.println(orderIds.get(i).getMenu().getPrice());
-//        }
         return bigList;
     }
+
+
+//    @GetMapping(path = "/allRecord")
+//    public @ResponseBody Iterable<String> allReport(){
+//        Iterable<RecordModel> all = recordRepository.findAll();
+//        List<RecordModel> target = new ArrayList<>();
+//        List<String> dateList = new ArrayList<>();
+//        all.forEach(target::add);
+//        for(int j=0; j<target.size();j++){
+//            if (dateList.contains((target.get(j).getDateclose()).toString().substring(0,10))){
+//                continue;
+//            }else{
+//                dateList.add((target.get(j).getDateclose()).toString().substring(0,10));
+//            }
+//            System.out.println(target.get(j).getDateclose());
+//        }
+//        System.out.println(dateList);
+//        return dateList;
+//    }
     @GetMapping(path = "/allRecord")
     public @ResponseBody Iterable<String> allReport(){
         Iterable<RecordModel> all = recordRepository.findAll();
@@ -111,14 +128,13 @@ public class RecordController {
         List<String> dateList = new ArrayList<>();
         all.forEach(target::add);
         for(int j=0; j<target.size();j++){
-            if (dateList.contains((target.get(j).getDateclose()).toString().substring(0,10))){
+//            System.out.println(target.get(j).getDateclose());
+            if (dateList.contains((target.get(j).getDateclose()))){
                 continue;
             }else{
-                dateList.add((target.get(j).getDateclose()).toString().substring(0,10));
+                dateList.add((target.get(j).getDateclose()));
             }
-            System.out.println(target.get(j).getDateclose());
         }
-        System.out.println(dateList);
         return dateList;
     }
 
@@ -141,4 +157,41 @@ public class RecordController {
         return "Saved";
 
     }
+
+    @PutMapping(path="/make_paid") // Map ONLY GET Requests
+    public @ResponseBody String paid (@RequestParam Long id) {
+        // @ResponseBody means the returned String is the response, not a view name
+        // @RequestParam means it is a parameter from the GET or POST request
+        RecordModel record_1 = recordRepository.findById(id);
+        record_1.setStatus("paid");
+        recordRepository.save(record_1);
+
+
+//        Order order_1 = orderRepository.findOne(id);
+//        order_1.setCurrentStatus(currentStatus);
+//        orderRepository.save(order_1);
+
+        System.out.println("Make paid.");
+
+        return "Saved";
+
+    }
+
+//    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(path = "/setStatus")
+    public @ResponseBody String updateStatus(@RequestParam Long id){
+        RecordModel orderIds = recordRepository.findById(id);
+        orderIds.setStatus("paid");
+        Date myDate = new Date();
+//        SimpleDateFormat dateFormatter = new SimpleDateFormat("MMMM d, yyyy");
+//        String myDateString = dateFormatter.format(myDate);
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy:HH-mm-ss");
+        String myDateString = dateFormatter.format(myDate).substring(0,10);
+        System.out.println(myDateString);
+        orderIds.setDateclose(myDateString);
+        System.out.println(myDateString);
+        recordRepository.save(orderIds);
+        return "okiedokie";
+    }
+
 }

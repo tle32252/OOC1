@@ -1,5 +1,6 @@
 package io.muic.ooc.pos.MenuItem;
 
+import io.muic.ooc.pos.Order.Order;
 import io.muic.ooc.pos.StorageProperties;
 import io.muic.ooc.pos.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,26 @@ public class FileUploaderController {
         System.out.println("get each kitchen");
 
         return menuRepository.findByCategoryType(categoryType);
+    }
+
+    @PutMapping(path="/del_menu") // Map ONLY GET Requests
+    public @ResponseBody Boolean delMenu (@RequestParam Long id) {
+        // @ResponseBody means the returned String is the response, not a view name
+        // @RequestParam means it is a parameter from the GET or POST request
+        Menu menu_1 = menuRepository.findOne(id);
+        menuRepository.delete(menu_1);
+        return Boolean.TRUE;
+
+//        menuRepository.delete(menu_1);
+//        if (menu_1.getCurrentStatus().equals("Waiting")){
+//            orderRepository.delete(order_1);
+//            System.out.println("check cancel");
+//
+//        }
+//        else{
+//            System.out.println("check cancel");
+//            return Boolean.FALSE;
+//        }
     }
 
 
