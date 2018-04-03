@@ -14,6 +14,16 @@ public class Menu {
 
     private String filepath;
 
+    private Boolean active;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     @Enumerated(EnumType.STRING)
     private CategoryType categoryType;
 

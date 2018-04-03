@@ -27,6 +27,7 @@ public class SuccessAuth extends SimpleUrlAuthenticationSuccessHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         String role = authentication.getPrincipal().toString();
         IOUtils.write(new ResponseLogin("Log in successfully", true, role).toString(), response.getWriter());
+        System.out.println("Succes auth");
     }
 
 }

@@ -42,6 +42,7 @@ public class FileUploaderController {
         n.setPrice(price);
         n.setCategoryType(categoryType);
         n.setFilepath(file.getOriginalFilename());
+        n.setActive(Boolean.TRUE);
 
         menuRepository.save(n);
 
@@ -80,21 +81,24 @@ public class FileUploaderController {
     public Iterable<Menu> findall(){
         return menuRepository.findAll();
     }
+
     @GetMapping(path="/each_kitchen")
     public @ResponseBody Iterable<Menu> eachKitchen (@RequestParam CategoryType categoryType) {
         // This returns a JSON or XML with the users
         System.out.println("get each kitchen");
 
-        return menuRepository.findByCategoryType(categoryType);
+        return menuRepository.findAllByCategoryTypeAndActive(categoryType, Boolean.TRUE);
     }
 
     @PutMapping(path="/del_menu") // Map ONLY GET Requests
-    public @ResponseBody Boolean delMenu (@RequestParam Long id) {
+    public @ResponseBody String delMenu (@RequestParam Long id) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
         Menu menu_1 = menuRepository.findOne(id);
-        menuRepository.delete(menu_1);
-        return Boolean.TRUE;
+        menu_1.setActive(Boolean.FALSE);
+        menuRepository.save(menu_1);
+        System.out.println("Delete menu");
+        return "Saved";
 
 //        menuRepository.delete(menu_1);
 //        if (menu_1.getCurrentStatus().equals("Waiting")){

@@ -14,10 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class OrderController {
@@ -54,7 +51,7 @@ public class OrderController {
 //        List<Order> orderlst = orderRepository.findByCurrentstatus("Done");
 //        Map<Order, Integer> ret = new HashMap<>();
         List<Pair<Order, Integer>>ret2 = new ArrayList<>();
-        List<Order> lstorder =  orderRepository.findAllByCurrentStatusNotAndMenuCategoryType(status, CategoryType.valueOf(categoryType));
+        List<Order> lstorder =  orderRepository.findAllByCurrentStatusNotAndMenuCategoryTypeOrderByDateAsc(status, CategoryType.valueOf(categoryType));
         for (Order order: lstorder){
             RecordModel record =recordRepository.findOneByOrders(order);
             if(record !=null) {
@@ -79,6 +76,38 @@ public class OrderController {
 
 
 
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    @GetMapping(path = "/checkout")
+//    public @ResponseBody List<HashMap> receipt(@RequestParam Long id){
+//        List<Order> orderIds = recordRepository.findById(id).getOrders();
+//        HashMap<String, Integer> foodAmountMap = new HashMap<>();
+//        List<HashMap> bigList = new ArrayList<>();
+//        List<String> allFood = new ArrayList<>();
+//        Integer totalPrice = 0;
+//        for (int j=0;j<orderIds.size();j++){
+//            if (!foodAmountMap.containsKey(orderIds.get(j).getMenu().getName())){
+//                foodAmountMap.put(orderIds.get(j).getMenu().getName(), 1);
+//            }else{
+//                foodAmountMap.put(orderIds.get(j).getMenu().getName(), foodAmountMap.get(orderIds.get(j).getMenu().getName()) +1);
+//            }
+//        }
+//        for (int i=0;i<orderIds.size();i++){
+//            if (!allFood.contains(orderIds.get(i).getMenu().getName())){
+//                HashMap<String, String> foodPriceMap = new HashMap<>();
+//                foodPriceMap.put("name", orderIds.get(i).getMenu().getName());
+//                allFood.add(orderIds.get(i).getMenu().getName());
+//                foodPriceMap.put("amount", foodAmountMap.get(orderIds.get(i).getMenu().getName()).toString());
+//                Integer eachPrice = ((orderIds.get(i).getMenu().getPrice()) * (foodAmountMap.get(orderIds.get(i).getMenu().getName())));
+//                foodPriceMap.put("price", eachPrice.toString());
+//                bigList.add(foodPriceMap);
+//                totalPrice += eachPrice;
+//            }
+//        }
+//        HashMap<String, Integer> totalPriceMap = new HashMap<>();
+//        totalPriceMap.put("price", totalPrice);
+//        bigList.add(totalPriceMap);
+//        return bigList;
+//    }
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path = "/checkout")
     public @ResponseBody List<HashMap> receipt(@RequestParam Long id){
@@ -106,8 +135,9 @@ public class OrderController {
                 totalPrice += eachPrice;
             }
         }
-        HashMap<String, Integer> totalPriceMap = new HashMap<>();
-        totalPriceMap.put("price", totalPrice);
+        HashMap<String, String> totalPriceMap = new HashMap<>();
+        totalPriceMap.put("name", "TOTAL PRICE");
+        totalPriceMap.put("price", totalPrice.toString());
         bigList.add(totalPriceMap);
         return bigList;
     }
@@ -120,6 +150,7 @@ public class OrderController {
 //        Long menuid = menu.getId();
 //        System.out.println(menuid);
         List<RecordModel> recordlst = recordRepository.findByTablenum(tablenum);
+        Date myDate = new Date();
         RecordModel thisRecord = null;
         System.out.println(menulst.size());
 
@@ -139,6 +170,7 @@ public class OrderController {
                 Order thisOrder = new Order();
                 thisOrder.setPrice(menu.getPrice());
                 thisOrder.setMenu(menu);
+                thisOrder.setDate(myDate);
                 thisOrder.setCurrentStatus("Waiting");
 
                 thisRecord.getOrders().add(thisOrder);

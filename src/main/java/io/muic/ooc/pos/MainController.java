@@ -126,10 +126,11 @@ public class MainController {
         return tableCheckRepository.findByStatusCheck(Boolean.TRUE);
     }
 
-    @GetMapping(path="/get_table_2")
+    @GetMapping(path="/show_cashier")
     public @ResponseBody Iterable<RecordModel> getAllTables_2() {
         // This returns a JSON or XML with the users
-        return recordRepository.findByStatusNot("paid");
+//        return recordRepository.findByStatusAndStatus("unpaid","pending");
+        return recordRepository.findByStatusOrStatus("unpaid","pending");
     }
 
     @GetMapping(path="/get_table_3")
@@ -168,8 +169,16 @@ public class MainController {
         List<TableCheck> all = tableCheckRepository.findByTableNumber(table);
         boolean ans;
         System.out.println("get order");
-        System.out.println(tableCheckRepository.findByTableNumber(6));
-        if (all.get(0).getStatusCheck().equals(false)){
+//        System.out.println(tableCheckRepository.findByTableNumber(6));
+        if (!tableCheckRepository.exists(table)){
+            System.out.println(!tableCheckRepository.exists(table));
+            TableCheck tableCheck_2 = new TableCheck();
+            tableCheck_2.setStatusCheck(Boolean.TRUE);
+            tableCheck_2.setTableNumber(table);
+            tableCheckRepository.save(tableCheck_2);
+            return Boolean.TRUE;
+        }
+        else if (all.get(0).getStatusCheck().equals(false)){
             TableCheck tableCheck = tableCheckRepository.findOne(table);
             tableCheck.setStatusCheck(Boolean.TRUE);
             tableCheckRepository.save(tableCheck);
@@ -179,6 +188,27 @@ public class MainController {
             return Boolean.FALSE;
         }
     }
+
+//    @GetMapping(path="/check_table")
+//    public @ResponseBody Boolean checkTable (@RequestParam Integer table){
+//        TableCheck tbCheck = tableCheckRepository.findByTableNumber(table);
+//    }
+    @GetMapping(path="/all_table_true")
+    public @ResponseBody Iterable<TableCheck> getAllTable() {
+        // This returns a JSON or XML with the users
+        return tableCheckRepository.findAllByStatusCheck(Boolean.TRUE);
+    }
+
+    @GetMapping(path="/check_login")
+    public @ResponseBody Boolean checkLogin (@RequestParam Integer table){
+        TableCheck tableCheck = tableCheckRepository.findOne(table);
+        return tableCheck.getStatusCheck();
+    }
+
+
+
+
+
 
     @PutMapping(path="/table_logout") // Map ONLY GET Requests
     public @ResponseBody String logout (@RequestParam Integer table_num) {
@@ -197,16 +227,7 @@ public class MainController {
 
 
 
-    @PostMapping("/uploadFileWithAddtionalData")
-    public String submit(
-            @RequestParam MultipartFile file, @RequestParam String name,
-            @RequestParam String email, ModelMap modelMap) {
 
-        modelMap.addAttribute("name", name);
-        modelMap.addAttribute("email", email);
-        modelMap.addAttribute("file", file);
-        return "fileUploadView";
-    }
 //    @CrossOrigin(origins = "http://localhost:3000")
 //    @RequestMapping(value = "/update_to_kitchen", method =  RequestMethod.PUT)
 //    public ResponseEntity<Order> update_3(@RequestBody Order order){

@@ -26,7 +26,7 @@ public class AuthHandler implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
-
+        System.out.println("Auth handler");
         System.out.println(username);
         // Check with Database
 

@@ -1,5 +1,6 @@
 package io.muic.ooc.pos.User;
 
+import io.muic.ooc.pos.Security.ResponseLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +36,10 @@ public class UserController {
         }
 
         return ResponseEntity.badRequest().body("Cant Register");
+    }
+
+    @PostMapping("/checkLogin")
+    public Boolean loginOrNot(ResponseLogin responseLogin, @RequestParam("username") String username){
+        return responseLogin.isLogin();
     }
 }

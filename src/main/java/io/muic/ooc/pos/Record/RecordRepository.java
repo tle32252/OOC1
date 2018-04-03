@@ -14,6 +14,7 @@ public interface RecordRepository extends CrudRepository<RecordModel, String> {
     RecordModel findById(Long id);
     List<RecordModel> findByStatus(String status);
     List<RecordModel> findByStatusNot(String status);
+    List<RecordModel> findByStatusOrStatus(String status, String status_2);
 
     RecordModel findByTablenum( Integer tablenum);
     List<RecordModel> findByDateclose(String date);

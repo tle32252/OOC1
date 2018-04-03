@@ -15,7 +15,7 @@ import java.util.List;
 public interface OrderRepository extends CrudRepository<Order, Long> {
 //    List<Order> findByTablenumber(int tablenumber);
 //    List<Order> findByCurrentstatus(String status);
-    List<Order> findAllByCurrentStatusNotAndMenuCategoryType(String currentStatus, CategoryType categoryType);
+    List<Order> findAllByCurrentStatusNotAndMenuCategoryTypeOrderByDateAsc(String currentStatus, CategoryType categoryType);
 //    List<Order> findAllByRecord_id(Long recid);
 
 }

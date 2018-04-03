@@ -97,7 +97,7 @@ public class RecordController {
             }
         }
         HashMap<String, String> totalPriceMap = new HashMap<>();
-        totalPriceMap.put("name", "Total Price");
+        totalPriceMap.put("name", "TOTAL PRICE");
         totalPriceMap.put("price", totalPrice.toString());
         bigList.add(totalPriceMap);
         return bigList;
@@ -158,12 +158,12 @@ public class RecordController {
 
     }
 
-    @PutMapping(path="/make_paid") // Map ONLY GET Requests
+    @PutMapping(path="/make_cancel") // Map ONLY GET Requests
     public @ResponseBody String paid (@RequestParam Long id) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
         RecordModel record_1 = recordRepository.findById(id);
-        record_1.setStatus("paid");
+        record_1.setStatus("cancel");
         recordRepository.save(record_1);
 
 
@@ -171,7 +171,7 @@ public class RecordController {
 //        order_1.setCurrentStatus(currentStatus);
 //        orderRepository.save(order_1);
 
-        System.out.println("Make paid.");
+        System.out.println("Make cancel.");
 
         return "Saved";
 
