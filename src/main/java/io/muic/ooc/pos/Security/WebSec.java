@@ -28,7 +28,7 @@ public class WebSec extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/login", "/logout","/user/register","/test/image/**","/test/del_menu","/demo/status_table", "/demo/check_login", "/test/each_kitchen", "/demo/show_cashier").permitAll()
+                .antMatchers("/login", "/logout","/user/register","/test/image/**","/test/del_menu","/demo/status_table", "/demo/check_login", "/test/each_kitchen", "/demo/show_cashier", "/each_table", "/demo/get_table_3").permitAll()
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin().loginProcessingUrl("/login")
