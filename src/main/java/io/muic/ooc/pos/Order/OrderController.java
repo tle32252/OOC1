@@ -7,7 +7,11 @@ import io.muic.ooc.pos.MenuItem.Menu;
 import io.muic.ooc.pos.MenuItem.MenuRepository;
 import io.muic.ooc.pos.Record.RecordModel;
 import io.muic.ooc.pos.Record.RecordRepository;
-import javafx.util.Pair;
+import org.apache.commons.lang3.builder.Diff;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+//import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,43 +33,56 @@ public class OrderController {
     @Autowired
     private MenuRepository menuRepository;
 
-//    @RequestMapping(value = "/order", method =  RequestMethod.POST)
-//    public ResponseEntity<Order> order(@RequestBody Order order){
-//        Order n = new Order();
-//        n.setCurrentStatus(order.getCurrentStatus());
-//        n.setMenu(order.getMenu());
-//        n.setPrice(order.getPrice());
-//
-//
-//        System.out.println("Order to kitchen.");
-//
-//        return new ResponseEntity<Order>(order, HttpStatus.OK);
-//    }
 
 
     @GetMapping(path="/each_kitchen")
-    @Transactional
-    public @ResponseBody List<Pair<Order, Integer>> eachKitchen (@RequestParam String categoryType, String status) {
+    public @ResponseBody List<Map<String, Object>> eachKitchen (@RequestParam String categoryType, String status) {
         // This returns a JSON or XML with the users
 //        List<Menu> menulst = menuRepository.findByCategoryType(categoryType);
 //        List<Order> orderlst = orderRepository.findByCurrentstatus("Done");
 //        Map<Order, Integer> ret = new HashMap<>();
-        List<Pair<Order, Integer>>ret2 = new ArrayList<>();
+        List<Map<String, Object>>ret2 = new ArrayList<>();
         List<Order> lstorder =  orderRepository.findAllByCurrentStatusNotAndMenuCategoryTypeOrderByDateAsc(status, CategoryType.valueOf(categoryType));
+
+        Map<Integer, List<Order>> ret = new HashMap<>();
+        Map<List<Order>, Integer> ret3 = new HashMap<>();
         for (Order order: lstorder){
-            RecordModel record =recordRepository.findOneByOrders(order);
+            RecordModel record = recordRepository.findOneByOrders(order);
             if(record !=null) {
-                int tablenum =record.getTablenum();
-//                ret.put(order, tablenum);
-                ret2.add(new Pair<>(order,tablenum));
-            } else{
+                int tablenum = record.getTablenum();
+                Map<String , Object> m = new HashMap<>();
+                m.put("key", order);
+                m.put("value", tablenum);
+                ret2.add(m);
+//                return
+            } else {
                 System.out.println("there is something wrong");
             }
+//            if (record != null){
+//                if (!ret.containsKey(record.getTablenum())){
+//                    ret.put()
+//                }
+//            }
+
+//            if (record != null){
+//                if (!ret.containsKey(record.getTablenum())){
+//                    ret.put(record.getTablenum(), new ArrayList<>());
+//                }
+//
+//                ret.get(record.getTablenum()).add(order);
+//            }
+
         }
+
+
         return ret2;
 
-
     }
+
+
+
+
+
 
     @GetMapping(path="/each_table")
     @Transactional
@@ -74,40 +91,6 @@ public class OrderController {
         return lst.getOrders();
     }
 
-
-
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @GetMapping(path = "/checkout")
-//    public @ResponseBody List<HashMap> receipt(@RequestParam Long id){
-//        List<Order> orderIds = recordRepository.findById(id).getOrders();
-//        HashMap<String, Integer> foodAmountMap = new HashMap<>();
-//        List<HashMap> bigList = new ArrayList<>();
-//        List<String> allFood = new ArrayList<>();
-//        Integer totalPrice = 0;
-//        for (int j=0;j<orderIds.size();j++){
-//            if (!foodAmountMap.containsKey(orderIds.get(j).getMenu().getName())){
-//                foodAmountMap.put(orderIds.get(j).getMenu().getName(), 1);
-//            }else{
-//                foodAmountMap.put(orderIds.get(j).getMenu().getName(), foodAmountMap.get(orderIds.get(j).getMenu().getName()) +1);
-//            }
-//        }
-//        for (int i=0;i<orderIds.size();i++){
-//            if (!allFood.contains(orderIds.get(i).getMenu().getName())){
-//                HashMap<String, String> foodPriceMap = new HashMap<>();
-//                foodPriceMap.put("name", orderIds.get(i).getMenu().getName());
-//                allFood.add(orderIds.get(i).getMenu().getName());
-//                foodPriceMap.put("amount", foodAmountMap.get(orderIds.get(i).getMenu().getName()).toString());
-//                Integer eachPrice = ((orderIds.get(i).getMenu().getPrice()) * (foodAmountMap.get(orderIds.get(i).getMenu().getName())));
-//                foodPriceMap.put("price", eachPrice.toString());
-//                bigList.add(foodPriceMap);
-//                totalPrice += eachPrice;
-//            }
-//        }
-//        HashMap<String, Integer> totalPriceMap = new HashMap<>();
-//        totalPriceMap.put("price", totalPrice);
-//        bigList.add(totalPriceMap);
-//        return bigList;
-//    }
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path = "/checkout")
     public @ResponseBody List<HashMap> receipt(@RequestParam Long id){
@@ -147,8 +130,6 @@ public class OrderController {
     @ResponseBody
     public void order2(@RequestBody List<Menu> menulst, @RequestParam int tablenum){
         System.out.println(tablenum);
-//        Long menuid = menu.getId();
-//        System.out.println(menuid);
         List<RecordModel> recordlst = recordRepository.findByTablenum(tablenum);
         Date myDate = new Date();
         RecordModel thisRecord = null;
@@ -180,27 +161,6 @@ public class OrderController {
             }
 
         }
-//        return ResponseEntity.ok("Success");
-//        for (RecordModel record: recordlst){
-//            if(record.getStatus().equals("Unpaid")){
-//                thisRecord = record;
-//            }
-//        }
-//        if(thisRecord == null){
-//            return ResponseEntity.badRequest().body("can't find unpaid model");
-//        }
-//        else{
-//            Order thisOrder = new Order();
-//            thisOrder.setPrice(menu.getPrice());
-//            thisOrder.setMenu(menu);
-//            thisOrder.setCurrentStatus("Waiting");
-//
-//            thisRecord.getOrders().add(thisOrder);
-//            orderRepository.save(thisOrder);
-//            recordRepository.save(thisRecord);
-//            return ResponseEntity.ok("Success");
-//        }
-
     }
 
 

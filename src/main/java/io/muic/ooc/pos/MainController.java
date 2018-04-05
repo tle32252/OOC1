@@ -75,18 +75,7 @@ public class MainController {
 //
 //        return new ResponseEntity<UserDto>(user, HttpStatus.OK);
 //    }
-    //@CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/order_real", method =  RequestMethod.POST)
-    public ResponseEntity<Menu> update(@RequestBody Menu menu){
-        Menu n = new Menu();
-        n.setName(menu.getName());
-        n.setPrice(menu.getPrice());
 
-        menuRepository.save(n);
-        System.out.println("orderrrrrr eiei");
-
-        return new ResponseEntity<Menu>(menu, HttpStatus.OK);
-    }
 
     // @CrossOrigin(origins = "http://localhost:3000")
 //    @RequestMapping(value = "/order_to_kitchen", method =  RequestMethod.POST)
@@ -140,13 +129,7 @@ public class MainController {
     }
 
 
-    // @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(path="/kitchen")
-    public @ResponseBody Iterable<Order> getAllUsers() {
-        // This returns a JSON or XML with the users
-        System.out.println("get order");
-        return orderRepository.findAll();
-    }
+
 
 //    @GetMapping(path="/each_table")
 //    public @ResponseBody Iterable<Order> eachTable (@RequestParam Integer table) {

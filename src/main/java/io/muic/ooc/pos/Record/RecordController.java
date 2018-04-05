@@ -138,7 +138,7 @@ public class RecordController {
         return dateList;
     }
 
-    
+
 
     @PutMapping(path="/make_pending") // Map ONLY GET Requests
     public @ResponseBody String pending (@RequestParam Long id) {

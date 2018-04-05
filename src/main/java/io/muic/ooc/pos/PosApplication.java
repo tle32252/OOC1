@@ -57,5 +57,4 @@ public class PosApplication {
 		return new StandardServletMultipartResolver();
 	}
 
-
 }
