@@ -64,7 +64,6 @@ public class FileUploaderController {
         headers.setContentType(MediaType.IMAGE_PNG);
         try {
 
-
             byte[]out = org.apache.commons.io.FileUtils.readFileToByteArray(img);
 
 
@@ -100,40 +99,6 @@ public class FileUploaderController {
         System.out.println("Delete menu");
         return "Saved";
 
-//        menuRepository.delete(menu_1);
-//        if (menu_1.getCurrentStatus().equals("Waiting")){
-//            orderRepository.delete(order_1);
-//            System.out.println("check cancel");
-//
-//        }
-//        else{
-//            System.out.println("check cancel");
-//            return Boolean.FALSE;
-//        }
     }
 
-
-
-//    @GetMapping("/files/**")
-//    @ResponseBody
-//    public ResponseEntity<Resource> serveFile(HttpServletRequest request) {
-//
-//        String[] parts = request.getServletPath().split("/");
-//        String name = parts[3];
-//
-//        Resource file = storageService.loadAsResource(name);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.IMAGE_PNG);
-//        return ResponseEntity.ok().headers(headers).body(file);
-//    }
-
-//    @GetMapping("/files/{filename:.+}")
-//    @ResponseBody
-//    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-////        System.out.println(filename);
-//        Resource file = storageService.loadAsResource(filename);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.IMAGE_JPEG);
-//        return ResponseEntity.ok().headers(headers).body(file);
-//    }
 }

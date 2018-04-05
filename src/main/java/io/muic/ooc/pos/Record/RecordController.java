@@ -104,23 +104,6 @@ public class RecordController {
     }
 
 
-//    @GetMapping(path = "/allRecord")
-//    public @ResponseBody Iterable<String> allReport(){
-//        Iterable<RecordModel> all = recordRepository.findAll();
-//        List<RecordModel> target = new ArrayList<>();
-//        List<String> dateList = new ArrayList<>();
-//        all.forEach(target::add);
-//        for(int j=0; j<target.size();j++){
-//            if (dateList.contains((target.get(j).getDateclose()).toString().substring(0,10))){
-//                continue;
-//            }else{
-//                dateList.add((target.get(j).getDateclose()).toString().substring(0,10));
-//            }
-//            System.out.println(target.get(j).getDateclose());
-//        }
-//        System.out.println(dateList);
-//        return dateList;
-//    }
     @GetMapping(path = "/allRecord")
     public @ResponseBody Iterable<String> allReport(){
         Iterable<RecordModel> all = recordRepository.findAll();
@@ -166,11 +149,6 @@ public class RecordController {
         RecordModel record_1 = recordRepository.findById(id);
         record_1.setStatus("cancel");
         recordRepository.save(record_1);
-
-
-//        Order order_1 = orderRepository.findOne(id);
-//        order_1.setCurrentStatus(currentStatus);
-//        orderRepository.save(order_1);
 
         System.out.println("Make cancel.");
 

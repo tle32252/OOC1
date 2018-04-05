@@ -144,7 +144,7 @@ public class OrderController {
                 }
             }
             if(thisRecord == null){
-                System.out.println("biytch");
+                System.out.println("null");
 //                return ResponseEntity.badRequest().body("can't find unpaid model");
             }
             else{

@@ -38,30 +38,7 @@ public class MainController {
     @Autowired
     private RecordRepository recordRepository;
 
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @GetMapping(path="/add") // Map ONLY GET Requests
-//    public @ResponseBody String addNewUser (@RequestParam String name
-//            , @RequestParam String email) {
-//        // @ResponseBody means the returned String is the response, not a view name
-//        // @RequestParam means it is a parameter from the GET or POST request
-//
-//        User n = new User();
-//        n.setName(name);
-//        n.setEmail(email);
-//        userRepository.save(n);
-//
-//        System.out.println("eeeeee");
-//
-//        return "Saved";
-//
-//    }
 
-//    @GetMapping(path="/all")
-//    public @ResponseBody Iterable<User> getAllUsers() {
-//        // This returns a JSON or XML with the users
-//        System.out.println("rrrrrrrr");
-//        return userRepository.findAll();
-//    }
 
 //    @CrossOrigin(origins = "http://localhost:3000")
 //    @RequestMapping(value = "/order", method =  RequestMethod.POST)
@@ -172,10 +149,7 @@ public class MainController {
         }
     }
 
-//    @GetMapping(path="/check_table")
-//    public @ResponseBody Boolean checkTable (@RequestParam Integer table){
-//        TableCheck tbCheck = tableCheckRepository.findByTableNumber(table);
-//    }
+
     @GetMapping(path="/all_table_true")
     public @ResponseBody Iterable<TableCheck> getAllTable() {
         // This returns a JSON or XML with the users
