@@ -31,26 +31,12 @@ public class PosApplication {
 //				registry.addMapping("/test/upload").allowedOrigins("http://localhost:3000").allowCredentials(true);
 
 				registry.addMapping("/**").allowCredentials(true).allowedOrigins("*").allowedMethods("*");
+				registry.addMapping("/**").allowCredentials(true).allowedOrigins("http://localhost").allowedMethods("*");
 //				registry.addMapping("/login").allowCredentials(true).allowedOrigins("http://localhost:3000").allowedMethods("*");
 			}
 		};
 	}
 
-//	@Bean(name = "multipartResolver")
-//	public CommonsMultipartResolver multipartResolver() {
-//		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-//		multipartResolver.setMaxUploadSize(100000);
-//		return multipartResolver;
-//	}
-
-//	@Bean
-//	CommandLineRunner init(StorageService storageService) {
-//
-//		return (args) -> {
-////            storageService.deleteAll();
-//			storageService.init();
-//		};
-//	}
 
 	@Bean
 	public StandardServletMultipartResolver multipartResolver() {

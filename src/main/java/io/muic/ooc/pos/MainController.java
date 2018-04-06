@@ -39,37 +39,6 @@ public class MainController {
     private RecordRepository recordRepository;
 
 
-
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @RequestMapping(value = "/order", method =  RequestMethod.POST)
-//    public ResponseEntity<UserDto> update(@RequestBody UserDto user){
-//        User n = new User();
-//        n.setName(user.getName());
-//        n.setEmail(user.getEmail());
-//
-//        userRepository.save(n);
-//        System.out.println("orderrrrrr");
-//
-//        return new ResponseEntity<UserDto>(user, HttpStatus.OK);
-//    }
-
-
-    // @CrossOrigin(origins = "http://localhost:3000")
-//    @RequestMapping(value = "/order_to_kitchen", method =  RequestMethod.POST)
-//    public ResponseEntity<Order> update_2(@RequestBody Order order){
-//        Order n = new Order();
-//        n.setName(order.getName());
-//        n.setTableNumber(order.getTableNumber());
-//        n.setCurrentStatus(order.getCurrentStatus());
-//        n.setKindOf(order.getKindOf());
-//
-//        orderRepository.save(n);
-//
-//        System.out.println("orderrrrrr kitchen");
-//
-//        return new ResponseEntity<Order>(order, HttpStatus.OK);
-//    }
-
     // @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(value = "/putin_table", method =  RequestMethod.POST)
     public ResponseEntity<TableCheck> check (@RequestBody TableCheck tableCheck){
@@ -107,20 +76,6 @@ public class MainController {
 
 
 
-
-//    @GetMapping(path="/each_table")
-//    public @ResponseBody Iterable<Order> eachTable (@RequestParam Integer table) {
-//        // This returns a JSON or XML with the users
-//        System.out.println("get order");
-//        return orderRepository.findByTableNumber(table);
-//    }
-
-//    @GetMapping(path="/each_kitchen")
-//    public @ResponseBody Iterable<Order> eachKitchen (@RequestParam Integer kindof) {
-//        // This returns a JSON or XML with the users
-//        System.out.println("get each kitchen");
-//        return orderRepository.findByCategoryType(kindof);
-//    }
 
     // @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path="/status_table")
@@ -178,45 +133,6 @@ public class MainController {
         return "Saved";
     }
 
-
-
-
-
-
-
-
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @RequestMapping(value = "/update_to_kitchen", method =  RequestMethod.PUT)
-//    public ResponseEntity<Order> update_3(@RequestBody Order order){
-//        Order m = new Order();
-//        Long curId = m.getId();
-//        String curSta = m.getCurrentStatus();
-//
-//        Order order_1 = orderRepository.findOne(curId);
-//
-//        order_1.setCurrentStatus(curSta);
-//
-//
-//        Order updateOrder = orderRepository.save(order_1);
-//
-//        return new ResponseEntity<Order>(updateOrder, HttpStatus.OK);
-//    }
-
-//    @RequestMapping(value = "/update_to_kitchen", method =  RequestMethod.PUT)
-//    @ResponseBody
-//    public String updateStatus(long id, String currentStatus){
-//        try {
-//            Order order = orderRepository.findOne(id);
-//            order.
-//
-//
-//        }
-//        catch (Exception ex) {
-//            return "Error updating the user: " + ex.toString();
-//        }
-//        return "User successfully updated!";
-//
-//    }
 
 
 }
