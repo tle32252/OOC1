@@ -31,7 +31,7 @@ public class PosApplication {
 //				registry.addMapping("/test/upload").allowedOrigins("http://localhost:3000").allowCredentials(true);
 
 				registry.addMapping("/**").allowCredentials(true).allowedOrigins("*").allowedMethods("*");
-				registry.addMapping("/**").allowCredentials(true).allowedOrigins("http://localhost").allowedMethods("*");
+//				registry.addMapping("/**").allowCredentials(true).allowedOrigins("http://localhost").allowedMethods("*");
 //				registry.addMapping("/login").allowCredentials(true).allowedOrigins("http://localhost:3000").allowedMethods("*");
 			}
 		};
