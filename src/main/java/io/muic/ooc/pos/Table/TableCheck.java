@@ -1,4 +1,4 @@
-package io.muic.ooc.pos;
+package io.muic.ooc.pos.Table;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

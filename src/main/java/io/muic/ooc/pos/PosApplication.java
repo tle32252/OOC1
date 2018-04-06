@@ -25,14 +25,8 @@ public class PosApplication {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/demo/all").allowedOrigins("http://localhost:3000").allowCredentials(true);
-//				registry.addMapping("/demo/order").allowedOrigins("http://localhost:3000").allowCredentials(true);
-//				registry.addMapping("/demo/order_to_kitchen").allowedOrigins("http://localhost:3000").allowCredentials(true);
-//				registry.addMapping("/test/upload").allowedOrigins("http://localhost:3000").allowCredentials(true);
 
 				registry.addMapping("/**").allowCredentials(true).allowedOrigins("*").allowedMethods("*");
-//				registry.addMapping("/**").allowCredentials(true).allowedOrigins("http://localhost:3000").allowedMethods("*");
-//				registry.addMapping("/login").allowCredentials(true).allowedOrigins("http://localhost:3000").allowedMethods("*");
 			}
 		};
 	}

@@ -1,9 +1,7 @@
 package io.muic.ooc.pos.Record;
 
 import io.muic.ooc.pos.Order.Order;
-import io.muic.ooc.pos.TableCheck;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -171,6 +169,19 @@ public class RecordController {
         System.out.println(myDateString);
         recordRepository.save(orderIds);
         return "okiedokie";
+    }
+
+    @GetMapping(path="/demo/show_cashier")
+    public @ResponseBody Iterable<RecordModel> getAllTables_2() {
+        // This returns a JSON or XML with the users
+//        return recordRepository.findByStatusAndStatus("unpaid","pending");
+        return recordRepository.findByStatusOrStatus("unpaid","pending");
+    }
+
+    @GetMapping(path="/demo/get_table_3")
+    public @ResponseBody RecordModel getAllTables_3(@RequestParam Long recid) {
+        // This returns a JSON or XML with the users
+        return recordRepository.findOneById(recid);
     }
 
 }
